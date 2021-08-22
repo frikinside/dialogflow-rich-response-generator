@@ -116,7 +116,140 @@ export default {
   components: {
     ResponseForm,
     DropdownButton
-  }
+  },
+  data() {
+        return {
+            current_language: 'en',
+            languages: [{ name:'English', lang:'en' }, { name:'Español', lang:'es' }],
+            content: {
+                brand_name: "Dialogflow Messenger Rich Response Generator",
+                dialogflow_messenger: {
+                    chat_title: "Preview"
+                },
+                responses_empty_message: "You don't have any response yet. Use the <code>Add</code> button to add a response type to your custom payload.",
+                add_button:"Add",
+                help_link_alt_text: "Go to dialogflow messenger documentation",
+                types: [
+                    {
+                        name: "info",
+                        text: "Info",
+                        link: "https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#info_response_type"
+                    },
+                    {
+                        name: "description",
+                        text: "Description",
+                        link: "https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#description_response_type"
+                    },
+                    {
+                        name: "image",
+                        text: "Image",
+                        link: "https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#image_response_type"
+                    },
+                    {
+                        name: "button",
+                        text: "Button",
+                        link: "https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#button_response_type"
+                    },
+                    {
+                        name: "list",
+                        text: "List",
+                        link: "https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#list_response_type"
+                    },
+                    {
+                        name: "accordion",
+                        text: "Accordion",
+                        link: "https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#accordion_response_type"
+                    },
+                    {
+                        name: "chips",
+                        text: "Suggestion chips",
+                        link: "https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#suggestion_chip_response_type"
+                    },
+                    {
+                        name: "divider",
+                        text: "Divider",
+                        link: "https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#list_response_type"
+                    }
+                ],
+                delete: "delete",
+                copy: "copy",
+                json_payload_copied: "copied!",
+                contact_email_subject: "¡Hello! I like your tool, prepare to read",
+                contact_email_alt: "Email me"
+            },
+            collapsed_panels: [],
+            payload: {
+                richContent: [
+                    [
+
+                    ]
+                ]
+            },
+            json_payload_copied: false
+        }
+    },
+    computed: {
+        current_content() {
+            return this.content;
+        },
+        contact_email_href() {
+            return "mailto:friki.inside@gmail.com?subject="+this.current_content.contact_email_subject;
+        },
+        payloadJSON() {
+            return JSON.stringify(this.payload, null, 4);
+        }
+    },
+    methods: {
+        findType(type_name) {
+            return this.current_content.types.find(x => { return x.name == type_name });
+        },
+        selectItem(item) {
+            console.log(item);
+
+            var response = { type: item.name };
+            if(response.type == 'info') {
+                response.image = {
+                    src: {}
+                };
+            } else if(response.type == 'description') {
+                response.text = [];
+            } else if(response.type == 'button') {
+                response.icon = {};
+                response.event = {};
+                response.event.parameters = [];
+            } else if(response.type == 'list') {
+                response.event = {};
+                response.event.parameters = [];
+            } else if(response.type == 'accordion') {
+                response.image = {
+                    src: {}
+                };
+            } else if(response.type == 'chips') {
+                response.options = [];
+            }
+
+            this.payload.richContent[0].push(response);
+            this.collapsed_panels.push(false);
+        },
+        deleteItem(index) {
+            this.payload.richContent[0].splice(index, 1);
+            this.collapsed_panels.splice(index, 1);
+        },
+        copyJSON() {
+            this.json_payload_copied = true;
+
+            var textarea_with_text_to_copy = document.createElement("textarea");
+            textarea_with_text_to_copy.style.display = "none";
+            document.body.appendChild(textarea_with_text_to_copy);
+            textarea_with_text_to_copy.value = this.payloadJSON;
+            textarea_with_text_to_copy.style.display = "block";
+            textarea_with_text_to_copy.select();
+            document.execCommand("copy");
+            document.body.removeChild(textarea_with_text_to_copy);
+
+            setTimeout(() => { this.json_payload_copied = false }, 1000);
+        }
+    }
 }
 </script>
 
