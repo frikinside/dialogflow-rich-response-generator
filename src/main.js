@@ -1,4 +1,7 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from 'vue';
+import App from './App.vue';
 
-createApp(App).mount('#app')
+var app = createApp(App);
+app.config.compilerOptions.isCustomElement = (tag) => tag === 'df-messenger';
+app.mount('#app');
+app.config.devtools = true;
