@@ -1,18 +1,6 @@
 <template>
   <form>
-        <fieldset v-if="response.type == 'info'">
-            <label for="info_title">{{ content.info.title }}</label>
-            <input id="info_title" type="text" :placeholder="content.info.title" v-model="response.title">
-
-            <label for="info_subtitle">{{ content.info.subtitle }}</label>
-            <input id="info_subtitle" type="text" :placeholder="content.info.subtitle" v-model="response.subtitle">
-
-            <label for="info_image">{{ content.info.image_url }}</label>
-            <input id="info_image" type="text" :class="{ error: !validUrl(response.image.src.rawUrl) }" :placeholder="content.info.image_placeholder" v-model="response.image.src.rawUrl">
-
-            <label for="info_action_link">{{ content.info.action_link }}</label>
-            <input id="info_action_link" type="text" :class="{ error: !validUrl(response.actionLink) }" :placeholder="content.info.action_link_placeholder" v-model="response.actionLink">
-        </fieldset>
+        <response-form-info v-if="response.type == 'info'" :response="response" />
 
         <fieldset v-if="response.type == 'description'">
             <label for="description_title">{{ content.description.title }}</label>
@@ -147,8 +135,13 @@
 </template>
 
 <script>
+import ResponseFormInfo from './response-form-info.vue'
+
 export default {
   name: 'response-form',
+  components: {
+    ResponseFormInfo
+  },
   props: {
       response: {
           type: Object,
@@ -158,14 +151,6 @@ export default {
     data() {
         return {
             content: {
-                info: {
-                    title: 'Card title',
-                    subtitle: 'Card subtitle',
-                    image_url: 'Public URL for image',
-                    image_placeholder: 'https://example.com/path/to/image.png',
-                    action_link: 'URL to follow when card is clicked',
-                    action_link_placeholder: 'https://example.com'
-                },
                 description: {
                     title: 'Card title',
                     lines: 'Text lines',
@@ -229,18 +214,7 @@ export default {
                     info: 'Add a <strong>divisory line</strong> between response types. Tipically used with the <code>list</code> type.'
                 }
             },
-            event_parameters: [],
-            urlRegex: {
-                full: /^(ftp|http|https):\/\/[^ "]+$/,
-                1: /^(f|h|h)$/,
-                2: /^(ft|ht|ht)$/,
-                3: /^(ftp|htt|htt)$/,
-                4: /^(ftp|http|http):?$/,
-                5: /^(ftp|http|https):?\/?$/,
-                6: /^(ftp|http|https):\/?\/?$/,
-                7: /^(ftp|http|https):\/\/?[^ "]*$/,
-                8: /^(ftp|http|https):\/\/[^ "]*$/
-            }
+            event_parameters: []
         }
     },
     computed: {
@@ -302,18 +276,8 @@ export default {
         },
         removeOption(index) {
             this.response.options.splice(index, 1);
-        },
-        validUrl(url) {
-            if(url && url.length) {
-                if(url.length > 8) {
-                    return this.urlRegex.full.test(url);
-                } else {
-                    return this.urlRegex[url.length].test(url);
-                }
-            } else {
-                return true;
-            }
         }
+        
     }
 }
 </script>

@@ -1,9 +1,12 @@
 import { createApp } from 'vue';
 import App from './App.vue';
+import Utils from './utils.js';
 
 var app = createApp(App);
 app.mount('#app');
 app.config.devtools = true;
+
+app.config.globalProperties.$utils = Utils;
 
 app.directive('autosize', {
 	beforeMount(el) {

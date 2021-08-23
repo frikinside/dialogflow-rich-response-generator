@@ -59,6 +59,7 @@
                 <li>Añadir índice a los ids de cada panel para que sea único y funcionen los eventos y labels for [NOTA Si dividimos cada sección en componente puede que sea innecesario?]</li>
                 <li>Revisar los parámetros opcionales que son objetos o listas para que se inicialicen y activen por eventos de un check (como event en button)</li>
                 <li>Seleccionar los iconos de la librería de material con asistente</li>
+                <li>Evitar el submit al hacer intro en cualquier input</li>
                 <li class="strike">Añadir enlaces de ayuda a DialogFlow para los tipos de respuesta</li>
                 <li>Estudiar posibilidad de tener una “superentidad” con metainformación de los paneles? En lugar de que estén “duplicados” en dos listas sincronizadas</li>
             </ul>
@@ -207,11 +208,7 @@ export default {
             console.log(item);
 
             var response = { type: item.name };
-            if(response.type == 'info') {
-                response.image = {
-                    src: {}
-                };
-            } else if(response.type == 'description') {
+            if(response.type == 'description') {
                 response.text = [];
             } else if(response.type == 'button') {
                 response.icon = {};
