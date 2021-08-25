@@ -41,7 +41,7 @@
 					<li class="strike">Añadir opción de copiar el JSON</li>
 					<li class="strike">Añadir botón para eliminar un panel</li>
 					<li class="strike">Añadir validación de url en los campos de url</li>
-					<li>Añadir iconos a las opciones</li>
+					<li class="strike">Añadir iconos a las opciones</li>
 					<li>Crear preview en dialog flow, seguramente haciendo uso de la API</li>
 					<li>Plantear la opción de vista previa "fuera de dialogflow"</li>
 					<li>Quizás plantear crear respuestas para que sean compuestas o no? Utilizando el array de arrays que es rich content</li>
@@ -50,7 +50,7 @@
 					<li>Añadir opción de tema oscuro (Con el aspecto de opera ligeramente modificado)</li>
 					<li>Animate css</li>
 					<li>Duplicado de paneles</li>
-					<li>Selector de colores</li>
+					<li class="strike">Selector de colores</li>
 					<li>En los ueventos usar un selector para el languageCode?</li>
 					<li>Revisar comportamiento de la lista de parámetros. Tiene algunos bugs al cambiar la key.</li>
 					<li>Usar $event para los add line text o add parameter</li>
@@ -91,7 +91,7 @@
 
 				<div class="clearfix">
 					<div class="float-right">
-						<dropdown-button :items="current_content.types" :button-text="current_content.add_button" :item-display-prop="'text'" @select-item="selectItem"></dropdown-button>
+						<dropdown-button :items="current_content.types" :button-text="current_content.add_button" :item-display-prop="'text'" :item-icon-prop="'icon'" @select-item="selectItem"></dropdown-button>
 					</div>
 				</div>
 			</section>
@@ -145,41 +145,49 @@ export default {
 					{
 						name: 'info',
 						text: 'Info',
+						icon: 'info-circle',
 						link: 'https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#info_response_type',
 					},
 					{
 						name: 'description',
 						text: 'Description',
+						icon: 'align-left',
 						link: 'https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#description_response_type',
 					},
 					{
 						name: 'image',
 						text: 'Image',
+						icon: 'image',
 						link: 'https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#image_response_type',
 					},
 					{
 						name: 'button',
 						text: 'Button',
+						icon: 'mouse-pointer',
 						link: 'https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#button_response_type',
 					},
 					{
 						name: 'list',
 						text: 'List',
+						icon: 'list',
 						link: 'https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#list_response_type',
 					},
 					{
 						name: 'accordion',
 						text: 'Accordion',
+						icon: 'list-alt',
 						link: 'https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#accordion_response_type',
 					},
 					{
 						name: 'chips',
 						text: 'Suggestion chips',
+						icon: 'th-large',
 						link: 'https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#suggestion_chip_response_type',
 					},
 					{
 						name: 'divider',
 						text: 'Divider',
+						icon: 'minus',
 						link: 'https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#list_response_type',
 					},
 				],

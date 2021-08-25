@@ -1,9 +1,9 @@
 <template>
-	<div class="dropdown-wrapper">
+	<div class="dropdown-wrapper" v-click-away="hideMenu">
 		<button class="button dropdown" @click="toggleMenu">{{ buttonText }}</button>
 		<div class="dropdown-menu" v-show="!collapsed">
 			<ul>
-				<li v-for="(item, index) in items" @click="selectItem(item)" :key="index">{{ itemDisplay(item, itemDisplayProp) }}</li>
+				<li v-for="(item, index) in items" @click="selectItem(item)" :key="index"><i v-show="itemIconProp" :class="itemIcon(item)" aria-hidden="true"></i> {{ itemDisplay(item) }}</li>
 			</ul>
 		</div>
 	</div>
@@ -24,6 +24,9 @@ export default {
 		itemDisplayProp: {
 			type: String,
 		},
+		itemIconProp: {
+			type: String,
+		},
 	},
 	data() {
 		return {
@@ -31,11 +34,18 @@ export default {
 		};
 	},
 	methods: {
-		itemDisplay(item, itemDisplayProp) {
-			return item instanceof Object ? item[itemDisplayProp] : item;
+		itemDisplay(item) {
+			return item instanceof Object && this.itemDisplayProp ? item[this.itemDisplayProp] : item;
+		},
+		itemIcon(item) {
+			console.log(this.itemIconProp);
+			return `fa fa-${item instanceof Object && this.itemIconProp ? item[this.itemIconProp] : item}`;
 		},
 		toggleMenu() {
 			this.collapsed = !this.collapsed;
+		},
+		hideMenu() {
+			this.collapsed = true;
 		},
 		selectItem(item) {
 			this.collapsed = true;
@@ -46,4 +56,9 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
+<style scoped>
+.dropdown-menu li > i {
+	width: 20px;
+	text-align: center;
+}
+</style>

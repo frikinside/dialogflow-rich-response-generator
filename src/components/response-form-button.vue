@@ -4,7 +4,13 @@
 		<input id="button_icon" type="text" :placeholder="content.icon.type_placeholder" v-model="response.icon.type" />
 
 		<label for="button_color">{{ content.icon.color }}</label>
-		<input id="button_color" type="text" :placeholder="content.icon.color" v-model="response.icon.color" />
+		<div v-click-away="hideColorPicker">
+			<div class="input-group">
+				<span class="input-group-addon" :style="{ background: response.icon.color }"></span>
+				<input id="button_color" type="text" :placeholder="content.icon.color" :value="response.icon.color" @click="toggleColorPicker" readonly />
+			</div>
+			<ColorPicker v-show="color_picker_active" theme="dark" :color="response.icon.color" @changeColor="changeColor" />
+		</div>
 
 		<label for="button_text">{{ content.text }}</label>
 		<input id="button_text" type="text" :placeholder="content.text" v-model="response.text" />
@@ -58,7 +64,13 @@
 </template>
 
 <script>
+import { ColorPicker } from 'vue-color-kit';
+import 'vue-color-kit/dist/vue-color-kit.css';
+
 export default {
+	components: {
+		ColorPicker,
+	},
 	name: 'response-form-button',
 	props: {
 		response: {
@@ -98,6 +110,7 @@ export default {
 				},
 			},
 			event_parameters: [],
+			color_picker_active: false,
 		};
 	},
 	methods: {
@@ -127,9 +140,25 @@ export default {
 		eventParameterKey(index) {
 			return this.event_parameters[index];
 		},
+		toggleColorPicker() {
+			this.color_picker_active = !this.color_picker_active;
+		},
+		hideColorPicker() {
+			this.color_picker_active = false;
+		},
+		changeColor(color) {
+			this.response.icon.color = color.hex;
+		},
 	},
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
+<style scoped>
+.hu-color-picker {
+	box-sizing: content-box;
+	position: absolute;
+	border: 0.1rem solid #d1d1d1;
+	margin-top: -10px;
+}
+</style>

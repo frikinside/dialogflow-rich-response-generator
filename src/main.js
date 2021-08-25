@@ -1,8 +1,10 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import Utils from './utils.js';
+import VueClickAway from 'vue3-click-away';
 
 var app = createApp(App);
+app.use(VueClickAway);
 app.mount('#app');
 app.config.devtools = true;
 
