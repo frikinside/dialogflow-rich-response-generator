@@ -1,13 +1,13 @@
 <template>
 	<form>
-		<response-form-info v-if="response.type == 'info'" :response="response" />
-		<response-form-description v-if="response.type == 'description'" :response="response" />
-		<response-form-image v-if="response.type == 'image'" :response="response" />
-		<response-form-button v-if="response.type == 'button'" :response="response" />
-		<response-form-list v-if="response.type == 'list'" :response="response" />
-		<response-form-accordion v-if="response.type == 'accordion'" :response="response" />
-		<response-form-chips v-if="response.type == 'chips'" :response="response" />
-		<response-form-divider v-if="response.type == 'divider'" :response="response" />
+		<response-form-info v-if="response.type == 'info'" :response="response" :id="id" />
+		<response-form-description v-if="response.type == 'description'" :response="response" :id="id" />
+		<response-form-image v-if="response.type == 'image'" :response="response" :id="id" />
+		<response-form-button v-if="response.type == 'button'" :response="response" :id="id" />
+		<response-form-list v-if="response.type == 'list'" :response="response" :id="id" />
+		<response-form-accordion v-if="response.type == 'accordion'" :response="response" :id="id" />
+		<response-form-chips v-if="response.type == 'chips'" :response="response" :id="id" />
+		<response-form-divider v-if="response.type == 'divider'" :response="response" :id="id" />
 	</form>
 </template>
 
@@ -39,15 +39,16 @@ export default {
 			required: true,
 		},
 	},
+	created() {
+		this.id = this.$utils.generateUniqueId();
+	},
 	data() {
-		return {};
+		return {
+			id: 0,
+		};
 	},
 	computed: {},
-	methods: {
-		logEvent($event) {
-			console.log($event);
-		},
-	},
+	methods: {},
 };
 </script>
 

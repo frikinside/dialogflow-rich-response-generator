@@ -16,6 +16,10 @@ export default {
 			type: Object,
 			required: true,
 		},
+		id: {
+			type: Number,
+			required: true,
+		},
 	},
 	created() {},
 	data() {
