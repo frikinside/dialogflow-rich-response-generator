@@ -13,7 +13,7 @@ export default {
 			required: true,
 		},
 		id: {
-			type: Number,
+			type: String,
 			required: true,
 		},
 	},
