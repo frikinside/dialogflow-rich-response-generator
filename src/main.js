@@ -5,10 +5,10 @@ import VueClickAway from 'vue3-click-away';
 
 var app = createApp(App);
 app.use(VueClickAway);
-app.mount('#app');
+app.config.globalProperties.$utils = Utils;
 app.config.devtools = true;
 
-app.config.globalProperties.$utils = Utils;
+app.mount('#app');
 
 app.directive('autosize', {
 	beforeMount(el) {

@@ -60,7 +60,7 @@
 					<li>Seleccionar los iconos de la librería de material con asistente</li>
 					<li>Evitar el submit al hacer intro en cualquier input</li>
 					<li class="strike">Añadir enlaces de ayuda a DialogFlow para los tipos de respuesta</li>
-					<li>Estudiar posibilidad de tener una “superentidad” con metainformación de los paneles? En lugar de que estén “duplicados” en dos listas sincronizadas</li>
+					<li class="strike">Estudiar posibilidad de tener una “superentidad” con metainformación de los paneles? En lugar de que estén “duplicados” en dos listas sincronizadas</li>
 					<li>Comprobar el comportamiento de los event parameters. Puede que sacar lo a un componente nuevo</li>
 				</ul>
 			</section>
@@ -70,22 +70,22 @@
 	<main>
 		<section class="container">
 			<section>
-				<p class="text-center" v-if="payload.richContent[0].length == 0" v-html="current_content.responses_empty_message"></p>
-				<div class="panel" v-for="(response, index) in payload.richContent[0]" :key="index">
+				<p class="text-center" v-if="panels.length == 0" v-html="current_content.responses_empty_message"></p>
+				<div class="panel" v-for="(panel, index) in panels" :key="index">
 					<div class="panel-title">
 						<div class="float-left">
-							<span class="icon-button" @click="collapsed_panels[index] = !collapsed_panels[index]" :title="collapsed_panels[index] ? current_content.expand : current_content.collapse"
-								><i class="fa" :class="{ 'fa-plus': collapsed_panels[index], 'fa-minus': !collapsed_panels[index] }" aria-hidden="true"></i
+							<span class="icon-button" @click="panel.collapsed = !panel.collapsed" :title="panel.collapse ? current_content.expand : current_content.collapse"
+								><i class="fa" :class="{ 'fa-plus': panel.collapsed, 'fa-minus': !panel.collapsed }" aria-hidden="true"></i
 							></span>
 						</div>
-						{{ findType(response.type).text }}
-						<a class="icon-button" :href="findType(response.type).link" target="_blank" :title="content.help_link_alt_text"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
+						{{ findType(panel.response.type).text }}
+						<a class="icon-button" :href="findType(panel.response.type).link" target="_blank" :title="content.help_link_alt_text"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
 						<div class="float-right">
 							<span class="icon-button" @click="deleteItem(index)" :title="current_content.delete"><i class="fa fa-window-close" aria-hidden="true"></i></span>
 						</div>
 					</div>
-					<div v-show="!collapsed_panels[index]" class="panel-body">
-						<response-form :response="response"></response-form>
+					<div v-show="!panel.collapsed" class="panel-body">
+						<response-form :response="panel.response"></response-form>
 					</div>
 				</div>
 
@@ -197,10 +197,7 @@ export default {
 				contact_email_subject: '¡Hello! I like your tool, prepare to read',
 				contact_email_alt: 'Email me',
 			},
-			collapsed_panels: [],
-			payload: {
-				richContent: [[]],
-			},
+			panels: [],
 			json_payload_copied: false,
 		};
 	},
@@ -212,7 +209,9 @@ export default {
 			return 'mailto:friki.inside@gmail.com?subject=' + this.current_content.contact_email_subject;
 		},
 		payloadJSON() {
-			return JSON.stringify(this.payload, null, 4);
+			//return JSON.stringify({ richContent: [this.panels.map((x) => x.response)] }, this.$utils.cleanJSON, 4);
+			//return JSON.stringify({ richContent: [this.panels.map((x) => JSON.parse(JSON.stringify(x.response, this.$utils.cleanJSON)))] }, this.$utils.cleanJSON, 4);
+			return JSON.stringify({ richContent: [this.panels.map((x) => JSON.parse(JSON.stringify(JSON.parse(JSON.stringify(x.response, this.$utils.cleanJSON)), this.$utils.cleanJSON)))] }, this.$utils.cleanJSON, 4);
 		},
 	},
 	methods: {
@@ -222,16 +221,11 @@ export default {
 			});
 		},
 		selectItem(item) {
-			console.log(item);
-
 			var response = { type: item.name };
-
-			this.payload.richContent[0].push(response);
-			this.collapsed_panels.push(false);
+			this.panels.push({ response, collapsed: false });
 		},
 		deleteItem(index) {
-			this.payload.richContent[0].splice(index, 1);
-			this.collapsed_panels.splice(index, 1);
+			this.panels.splice(index, 1);
 		},
 		copyJSON() {
 			this.json_payload_copied = true;

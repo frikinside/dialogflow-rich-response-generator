@@ -38,7 +38,6 @@ export default {
 			return item instanceof Object && this.itemDisplayProp ? item[this.itemDisplayProp] : item;
 		},
 		itemIcon(item) {
-			console.log(this.itemIconProp);
 			return `fa fa-${item instanceof Object && this.itemIconProp ? item[this.itemIconProp] : item}`;
 		},
 		toggleMenu() {

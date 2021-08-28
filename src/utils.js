@@ -10,20 +10,41 @@ const urlRegex = {
 	8: /^(ftp|http|https):\/\/[^ "]*$/,
 };
 
-export default {
-	urlRegex: urlRegex,
-	validUrl: (url) => {
-		if (url && url.length) {
-			if (url.length > 8) {
-				return urlRegex.full.test(url);
-			} else {
-				return urlRegex[url.length].test(url);
-			}
+const validUrl = (url) => {
+	if (url && url.length) {
+		if (url.length > 8) {
+			return urlRegex.full.test(url);
 		} else {
-			return true;
+			return urlRegex[url.length].test(url);
 		}
-	},
-	generateUniqueId: () => {
-		return `${Date.now()}${Math.floor(Math.random() * 100)}`;
+	} else {
+		return true;
 	}
+};
+const generateUniqueId = () => {
+	return `${Date.now()}${Math.floor(Math.random() * 100)}`;
+};
+const itemIsEmpty = (item) => {
+	return item == null || (item instanceof Object && !Object.keys(item).length) || (item instanceof Array && !item.length) || (typeof item == 'string' && !item.trim().length);
+};
+
+const cleanJSON = (key, value) => {
+	if (itemIsEmpty(value)) {
+		return undefined;
+	}
+	if (value instanceof Array) {
+		var value_filtered = value.filter((x) => {
+			return !itemIsEmpty(x);
+		});
+		return itemIsEmpty(value_filtered) ? undefined : value_filtered;
+	}
+	return value;
+};
+
+export default {
+	urlRegex,
+	validUrl,
+	generateUniqueId,
+	itemIsEmpty,
+	cleanJSON,
 };
