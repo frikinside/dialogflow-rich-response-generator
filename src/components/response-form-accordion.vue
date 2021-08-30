@@ -1,16 +1,16 @@
 <template>
 	<fieldset>
-		<label for="accordion_title">{{ content.title }}</label>
-		<input id="accordion_title" type="text" :placeholder="content.title" v-model="response.title" />
+		<label :for="`accordion_title_${id}`">{{ content.title }}</label>
+		<input :id="`accordion_title_${id}`" type="text" :placeholder="content.title" v-model="response.title" />
 
-		<label for="accordion_subtitle">{{ content.subtitle }}</label>
-		<input id="accordion_subtitle" type="text" :placeholder="content.subtitle" v-model="response.subtitle" />
+		<label :for="`accordion_subtitle_${id}`">{{ content.subtitle }}</label>
+		<input :id="`accordion_subtitle_${id}`" type="text" :placeholder="content.subtitle" v-model="response.subtitle" />
 
-		<label for="accordion_image">{{ content.image_url }}</label>
-		<input id="accordion_image" type="text" :class="{ error: !$utils.validUrl(response.image.src.rawUrl) }" :placeholder="content.image_placeholder" v-model="response.image.src.rawUrl" />
+		<label :for="`accordion_image_${id}`">{{ content.image_url }}</label>
+		<input :id="`accordion_image_${id}`" type="text" :class="{ error: !$utils.validUrl(response.image.src.rawUrl) }" :placeholder="content.image_placeholder" v-model="response.image.src.rawUrl" />
 
-		<label for="accordion_text">{{ content.title }}</label>
-		<textarea id="accordion_text" :placeholder="content.text" v-model="response.text" v-autosize></textarea>
+		<label :for="`accordion_text_${id}`">{{ content.title }}</label>
+		<textarea :id="`accordion_text_${id}`" :placeholder="content.text" v-model="response.text" v-autosize></textarea>
 	</fieldset>
 </template>
 
@@ -28,7 +28,7 @@ export default {
 		},
 	},
 	created() {
-		this.response.image = {
+		this.response.image = this.response.image ?? {
 			src: {},
 		};
 	},

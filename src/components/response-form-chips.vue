@@ -1,18 +1,20 @@
 <template>
 	<fieldset>
-		<label for="chips_options">{{ content.options }}</label>
-		<fieldset v-for="(option, index) in response.options" :key="index">
-			<span class="chips-option-delete-icon icon-button delete float-right" @click="removeOption(index)" :title="content.delete"><i class="fa fa-window-close" aria-hidden="true"></i></span>
+		<label :for="`chips_options_${id}`">{{ content.options }}</label>
+		<transition-group name="flip-list">
+			<fieldset v-for="(option, index) in response.options" :key="index">
+				<span class="chips-option-delete-icon icon-button delete float-right" @click="removeOption(index)" :title="content.delete"><i class="fa fa-window-close" aria-hidden="true"></i></span>
 
-			<label :for="'chips_text_' + index">{{ content.text }}</label>
-			<input :id="'chips_text_' + index" type="text" :placeholder="content.text" v-model="option.text" />
+				<label :for="'chips_text_' + index">{{ content.text }}</label>
+				<input :id="'chips_text_' + index" type="text" :placeholder="content.text" v-model="option.text" />
 
-			<label :for="'chips_image_' + index">{{ content.image_url }}</label>
-			<input :id="'chips_image_' + index" type="text" :class="{ error: !$utils.validUrl(option.image.src.rawUrl) }" :placeholder="content.image_placeholder" v-model="option.image.src.rawUrl" />
+				<label :for="'chips_image_' + index">{{ content.image_url }}</label>
+				<input :id="'chips_image_' + index" type="text" :class="{ error: !$utils.validUrl(option.image.src.rawUrl) }" :placeholder="content.image_placeholder" v-model="option.image.src.rawUrl" />
 
-			<label :for="'chips_link_' + index">{{ content.link }}</label>
-			<input :id="'chips_link_' + index" type="text" :class="{ error: !$utils.validUrl(option.link) }" :placeholder="content.link_placeholder" v-model="option.link" />
-		</fieldset>
+				<label :for="'chips_link_' + index">{{ content.link }}</label>
+				<input :id="'chips_link_' + index" type="text" :class="{ error: !$utils.validUrl(option.link) }" :placeholder="content.link_placeholder" v-model="option.link" />
+			</fieldset>
+		</transition-group>
 		<button type="button" class="button" @click="addOption()"><i class="fa fa-plus" aria-hidden="true"></i></button>
 	</fieldset>
 </template>
@@ -31,7 +33,7 @@ export default {
 		},
 	},
 	created() {
-		this.response.options = [];
+		this.response.options = this.response.options ?? [];
 	},
 	data() {
 		return {

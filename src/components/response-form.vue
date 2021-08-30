@@ -1,5 +1,5 @@
 <template>
-	<form>
+	<form @submit.prevent>
 		<response-form-info v-if="response.type == 'info'" :response="response" :id="id" />
 		<response-form-description v-if="response.type == 'description'" :response="response" :id="id" />
 		<response-form-image v-if="response.type == 'image'" :response="response" :id="id" />
@@ -38,14 +38,13 @@ export default {
 			type: Object,
 			required: true,
 		},
-	},
-	created() {
-		this.id = this.$utils.generateUniqueId();
+		id: {
+			type: String,
+			required: true,
+		},
 	},
 	data() {
-		return {
-			id: 0,
-		};
+		return {};
 	},
 	computed: {},
 	methods: {},

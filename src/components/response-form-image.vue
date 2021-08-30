@@ -1,10 +1,10 @@
 <template>
 	<fieldset>
-		<label for="image_rawUrl">{{ content.rawUrl }}</label>
-		<input id="image_rawUrl" type="text" :class="{ error: !$utils.validUrl(response.rawUrl) }" :placeholder="content.rawUrl_placeholder" v-model="response.rawUrl" />
+		<label :for="`image_rawUrl_${id}`">{{ content.rawUrl }}</label>
+		<input :id="`image_rawUrl_${id}`" type="text" :class="{ error: !$utils.validUrl(response.rawUrl) }" :placeholder="content.rawUrl_placeholder" v-model="response.rawUrl" />
 
-		<label for="image_accessibilityText">{{ content.accessibilityText }}</label>
-		<input id="image_accessibilityText" type="text" :placeholder="content.accessibilityText" v-model="response.accessibilityText" />
+		<label :for="`image_accessibilityText_${id}`">{{ content.accessibilityText }}</label>
+		<input :id="`image_accessibilityText_${id}`" type="text" :placeholder="content.accessibilityText" v-model="response.accessibilityText" />
 	</fieldset>
 </template>
 

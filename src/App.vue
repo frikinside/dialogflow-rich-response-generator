@@ -48,20 +48,25 @@
 					<li class="strike">Cambiar todos los textos por un json de contenido y literales</li>
 					<li>Internacionalización, planteamos ES y EN únicamente</li>
 					<li>Añadir opción de tema oscuro (Con el aspecto de opera ligeramente modificado)</li>
-					<li>Animate css</li>
-					<li>Duplicado de paneles</li>
+					<li class="strike">Animate css</li>
+					<li class="strike">Reordenar paneles</li>
+					<li class="strike">Duplicado de paneles</li>
 					<li class="strike">Selector de colores</li>
-					<li>En los ueventos usar un selector para el languageCode?</li>
-					<li>Revisar comportamiento de la lista de parámetros. Tiene algunos bugs al cambiar la key.</li>
-					<li>Usar $event para los add line text o add parameter</li>
-					<li>Añadir una función para que el JSON se esté mostrando con una limpieza de elementos vacíos.</li>
-					<li>Añadir índice a los ids de cada panel para que sea único y funcionen los eventos y labels for [NOTA Si dividimos cada sección en componente puede que sea innecesario?]</li>
-					<li>Revisar los parámetros opcionales que son objetos o listas para que se inicialicen y activen por eventos de un check (como event en button)</li>
+					<li>En los eventos usar un selector para el languageCode?</li>
+					<li class="strike">Revisar comportamiento de la lista de parámetros. Tiene algunos bugs al cambiar la key.</li>
+					<li class="strike">Usar $event para los add line text o add parameter</li>
+					<li class="strike">Añadir una función para que el JSON se esté mostrando con una limpieza de elementos vacíos.</li>
+					<li class="strike">
+						Añadir índice a los ids de cada panel para que sea único y funcionen los eventos y labels for [NOTA Si dividimos cada sección en componente puede que sea innecesario?]
+					</li>
+					<li class="strike">Revisar los parámetros opcionales que son objetos o listas para que se inicialicen y activen por eventos de un check (como event en button)</li>
 					<li>Seleccionar los iconos de la librería de material con asistente</li>
-					<li>Evitar el submit al hacer intro en cualquier input</li>
+					<li class="strike">Evitar el submit al hacer intro en cualquier input</li>
 					<li class="strike">Añadir enlaces de ayuda a DialogFlow para los tipos de respuesta</li>
 					<li class="strike">Estudiar posibilidad de tener una “superentidad” con metainformación de los paneles? En lugar de que estén “duplicados” en dos listas sincronizadas</li>
-					<li>Comprobar el comportamiento de los event parameters. Puede que sacar lo a un componente nuevo</li>
+					<li class="strike">Comprobar el comportamiento de los event parameters. Puede que sacar lo a un componente nuevo</li>
+					<li>Posibilidad de parsear un JSON generado</li>
+					<li class="strike">Solucionar problema con los focus de las listas on enter</li>
 				</ul>
 			</section>
 		</section>
@@ -71,23 +76,40 @@
 		<section class="container">
 			<section>
 				<p class="text-center" v-if="panels.length == 0" v-html="current_content.responses_empty_message"></p>
-				<div class="panel" v-for="(panel, index) in panels" :key="index">
-					<div class="panel-title">
-						<div class="float-left">
-							<span class="icon-button" @click="panel.collapsed = !panel.collapsed" :title="panel.collapse ? current_content.expand : current_content.collapse"
-								><i class="fa" :class="{ 'fa-plus': panel.collapsed, 'fa-minus': !panel.collapsed }" aria-hidden="true"></i
-							></span>
+				<draggable
+					v-model="panels"
+					tag="transition-group"
+					:component-data="{ name: 'flip-list' }"
+					ghost-class="panel-ghost"
+					drag-class="panel-drag"
+					animation="200"
+					handle=".move-handle"
+					item-key="id"
+				>
+					<template #item="{element:panel,index}">
+						<div :id="`panel_${panel.id}`" class="panel">
+							<div class="panel-title">
+								<div class="float-left">
+									<span class="icon-button" @click="panel.collapsed = !panel.collapsed" :title="panel.collapse ? current_content.expand : current_content.collapse"
+										><i class="fa" :class="{ 'fa-plus': panel.collapsed, 'fa-minus': !panel.collapsed }" aria-hidden="true"></i
+									></span>
+								</div>
+								{{ findType(panel.response.type).text }}
+								<a class="icon-button" :href="findType(panel.response.type).link" target="_blank" :title="content.help_link_alt_text"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
+								<div class="float-right">
+									<span class="icon-button move-handle" :title="current_content.move" v-show="panels.length > 1"><i class="fa fa-arrows" aria-hidden="true"></i></span>
+									<span class="icon-button" @click="cloneItem(index)" :title="current_content.clone"><i class="fa fa-clone" aria-hidden="true"></i></span>
+									<span class="icon-button" @click="deleteItem(index)" :title="current_content.delete"><i class="fa fa-window-close" aria-hidden="true"></i></span>
+								</div>
+							</div>
+							<collapse-transition>
+								<div v-show="!panel.collapsed" class="panel-body">
+									<response-form :response="panel.response" :id="panel.id"></response-form>
+								</div>
+							</collapse-transition>
 						</div>
-						{{ findType(panel.response.type).text }}
-						<a class="icon-button" :href="findType(panel.response.type).link" target="_blank" :title="content.help_link_alt_text"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
-						<div class="float-right">
-							<span class="icon-button" @click="deleteItem(index)" :title="current_content.delete"><i class="fa fa-window-close" aria-hidden="true"></i></span>
-						</div>
-					</div>
-					<div v-show="!panel.collapsed" class="panel-body">
-						<response-form :response="panel.response"></response-form>
-					</div>
-				</div>
+					</template>
+				</draggable>
 
 				<div class="clearfix">
 					<div class="float-right">
@@ -117,14 +139,18 @@
 </template>
 
 <script>
-import ResponseForm from './components/response-form.vue';
+import draggable from 'vuedraggable';
 import DropdownButton from './components/dropdown-button.vue';
+import CollapseTransition from './components/collapse-transition.vue';
+import ResponseForm from './components/response-form.vue';
 
 export default {
 	name: 'App',
 	components: {
-		ResponseForm,
+		draggable,
 		DropdownButton,
+		CollapseTransition,
+		ResponseForm,
 	},
 	data() {
 		return {
@@ -192,6 +218,7 @@ export default {
 					},
 				],
 				delete: 'delete',
+				clone: 'clone',
 				copy: 'copy',
 				json_payload_copied: 'copied!',
 				contact_email_subject: '¡Hello! I like your tool, prepare to read',
@@ -211,7 +238,11 @@ export default {
 		payloadJSON() {
 			//return JSON.stringify({ richContent: [this.panels.map((x) => x.response)] }, this.$utils.cleanJSON, 4);
 			//return JSON.stringify({ richContent: [this.panels.map((x) => JSON.parse(JSON.stringify(x.response, this.$utils.cleanJSON)))] }, this.$utils.cleanJSON, 4);
-			return JSON.stringify({ richContent: [this.panels.map((x) => JSON.parse(JSON.stringify(JSON.parse(JSON.stringify(x.response, this.$utils.cleanJSON)), this.$utils.cleanJSON)))] }, this.$utils.cleanJSON, 4);
+			return JSON.stringify(
+				{ richContent: [this.panels.map((x) => JSON.parse(JSON.stringify(JSON.parse(JSON.stringify(x.response, this.$utils.cleanJSON)), this.$utils.cleanJSON)))] },
+				this.$utils.cleanJSON,
+				4
+			);
 		},
 	},
 	methods: {
@@ -222,10 +253,15 @@ export default {
 		},
 		selectItem(item) {
 			var response = { type: item.name };
-			this.panels.push({ response, collapsed: false });
+			this.panels.push({ response, collapsed: false, id: this.$utils.generateUniqueId() });
 		},
 		deleteItem(index) {
 			this.panels.splice(index, 1);
+		},
+		cloneItem(index) {
+			let panel = JSON.parse(JSON.stringify(this.panels[index]));
+			panel.id = this.$utils.generateUniqueId();
+			this.panels.splice(index + 1, 0, panel);
 		},
 		copyJSON() {
 			this.json_payload_copied = true;
@@ -247,4 +283,334 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+/* BASE PAGE STYLES */
+body {
+	background-color: #eeefff;
+}
+
+header {
+	background-color: white;
+	border-bottom: 1px solid #dadada;
+}
+
+header > .container {
+	padding-bottom: 7.5rem;
+	padding-top: 7.5rem;
+}
+
+main > .container {
+	padding-bottom: 7.5rem;
+	padding-top: 5rem;
+}
+
+main pre {
+	border: 1px solid #dadada;
+	border-left: 0.3rem solid #9b4dca;
+}
+
+main pre#response_json {
+	overflow: hidden;
+}
+
+main pre#response_json > code {
+	white-space: break-spaces;
+}
+
+footer {
+	background-color: white;
+	border-top: 1px solid #dadada;
+}
+
+footer > .container {
+	padding-bottom: 3rem;
+	padding-top: 3rem;
+}
+
+footer p {
+	margin-bottom: 0;
+}
+
+footer p.social-links a {
+	margin-right: 1rem;
+	font-size: 18px;
+}
+
+/* ICON TITLE */
+.icon-title {
+	background: url(~@/assets/dfmrmg-title.png) no-repeat left center;
+	background-size: contain;
+	padding-left: 75px;
+}
+
+/* PANEL */
+.panel {
+	background-color: white;
+	border: 1px solid #dadada;
+	margin-bottom: 1.5rem;
+	border-radius: 0.4rem;
+}
+
+.panel .panel-title {
+	background-color: #9b4dca;
+	border: 0.1rem solid #9b4dca;
+	border-radius: 0.4rem 0.4rem 0 0;
+	color: white;
+	font-size: 1.1rem;
+	font-weight: 700;
+	min-height: 3.8rem;
+	letter-spacing: 0.1rem;
+	line-height: 3.8rem;
+	padding: 0 3rem;
+	text-align: center;
+	text-decoration: none;
+	text-transform: uppercase;
+	white-space: nowrap;
+}
+
+.panel .panel-body {
+	padding: 2rem 3rem;
+}
+
+.panel .panel-body form:last-child,
+.panel .panel-body fieldset:last-child {
+	margin-bottom: 0;
+}
+
+/* DRAGGABLE */
+.panel-ghost {
+	opacity: 0.5;
+}
+
+.panel-drag {
+	background: transparent !important;
+}
+
+.icon-button {
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.icon-button.move-handle {
+	cursor: move;
+}
+
+.icon-button:hover {
+	opacity: 0.8;
+}
+
+a.icon-button {
+	color: inherit;
+}
+
+.icon-button + .icon-button {
+	margin-left: 10px;
+}
+
+.icon-button.delete {
+	color: #d01e2e;
+	border-color: #ff8e99;
+}
+
+.input-group .icon-button.delete {
+	background-color: #ffbbc2;
+}
+
+#copy_button {
+	margin: 0.5em;
+}
+
+code.highlight {
+	background-color: #606c76;
+	color: white;
+}
+
+/* UTILITIES */
+.text-center {
+	text-align: center;
+}
+
+.strike {
+	text-decoration: line-through;
+}
+
+[disabled] {
+	cursor: not-allowed;
+}
+
+/* COMPONENT DROPDOWN */
+.dropdown-wrapper {
+	position: relative;
+	margin-bottom: 1.5rem;
+	display: inline-block;
+}
+.dropdown {
+	width: 100%;
+	margin-bottom: 0;
+	padding-right: 4em;
+}
+
+.dropdown:after {
+	border: 2px solid transparent;
+	border-color: white;
+	right: 1.2rem;
+	border-right: 0;
+	border-top: 0;
+	content: '';
+	display: block;
+	height: 1rem;
+	margin-top: -0.7rem;
+	pointer-events: none;
+	position: absolute;
+	top: 50%;
+	transform: rotate(-45deg);
+	transform-origin: center;
+	width: 1rem;
+}
+
+.float-right .dropdown-menu {
+	right: 0;
+}
+
+.dropdown-menu {
+	width: max-content;
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.2), 0 3px 4px rgba(0, 0, 0, 0.15);
+	min-width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	border: 1px solid;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	position: absolute;
+	background-color: white;
+	top: 100%;
+	z-index: 1;
+	border-color: #a7a7a7;
+	border-radius: 0.4rem;
+	overflow-x: hidden;
+	border-radius: 0.5rem;
+}
+
+.dropdown-menu > ul {
+	list-style-type: none;
+	max-height: 50vh;
+	overflow-y: auto;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.dropdown-menu > ul > li {
+	padding-right: 2rem;
+	padding-left: 0.5rem;
+	padding-bottom: 0.5rem;
+	padding-top: 0.5rem;
+	margin: 0;
+	cursor: pointer;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	text-align: left;
+}
+
+.dropdown-menu > ul > li:hover {
+	background-color: #9b4dca;
+	color: white;
+}
+
+/* INPUT GROUP ADDON */
+.input-group > * {
+	flex: 0 0 1;
+	padding: 0;
+}
+
+.input-group {
+	display: flex;
+}
+
+.input-group-addon {
+	background-color: #e1e1e1;
+	border: 0.1rem solid #d1d1d1;
+	border-radius: 0.4rem;
+	color: #606c76;
+	display: inline-block;
+	font-size: 1.1rem;
+	font-weight: 700;
+	height: 3.8rem;
+	letter-spacing: 0.1rem;
+	line-height: 3.8rem;
+	padding: 0 1rem;
+	text-align: center;
+	text-decoration: none;
+	text-transform: uppercase;
+	white-space: nowrap;
+}
+
+.input-group-addon.primary {
+	background-color: #9b4dca;
+	border: 0.1rem solid #9b4dca;
+}
+
+.input-group > .input-group-addon:nth-child(1) {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+	border-right: 0;
+}
+
+.input-group > .input-group-addon:not(:nth-child(1)) {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	border-left: 0;
+}
+
+.input-group > input:not(:nth-last-child(1)) {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.input-group > input:not(:nth-child(1)) {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+/* SUBFORM - FIELDSET */
+fieldset > fieldset {
+	border: 0.1rem solid #d1d1d1;
+	border-radius: 0.4rem;
+	padding: 20px;
+	background: rgb(209 209 209 / 10%);
+	font-size: 0.9em;
+}
+
+fieldset > fieldset label {
+	font-size: 1.5rem;
+}
+
+.chips-option-delete-icon {
+	margin-top: -10px;
+}
+
+/* FORMS VALIDATION */
+input.error,
+input:focus.error,
+textarea.error,
+textarea:focus.error,
+select.error,
+select:focus.error {
+	color: #d01e2e;
+	border-color: #d01e2e;
+}
+
+/* TRANSITIONS */
+.flip-list-move {
+	transition: transform 0.4s ease;
+}
+
+.flip-list-enter-active,
+.flip-list-leave-active {
+	transition: all 0.4s ease;
+}
+.flip-list-enter-from,
+.flip-list-leave-to {
+	opacity: 0;
+	transform: translateY(-30px);
+}
+</style>

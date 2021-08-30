@@ -1,16 +1,16 @@
 <template>
 	<fieldset>
-		<label for="info_title">{{ content.title }}</label>
-		<input id="info_title" type="text" :placeholder="content.title" v-model="response.title" />
+		<label :for="`info_title_${id}`">{{ content.title }}</label>
+		<input :id="`info_title_${id}`" type="text" :placeholder="content.title" v-model="response.title" />
 
-		<label for="info_subtitle">{{ content.subtitle }}</label>
-		<input id="info_subtitle" type="text" :placeholder="content.subtitle" v-model="response.subtitle" />
+		<label :for="`info_subtitle_${id}`">{{ content.subtitle }}</label>
+		<input :id="`info_subtitle_${id}`" type="text" :placeholder="content.subtitle" v-model="response.subtitle" />
 
-		<label for="info_image">{{ content.image_url }}</label>
-		<input id="info_image" type="text" :class="{ error: !$utils.validUrl(response.image.src.rawUrl) }" :placeholder="content.image_placeholder" v-model="response.image.src.rawUrl" />
+		<label :for="`info_image_${id}`">{{ content.image_url }}</label>
+		<input :id="`info_image_${id}`" type="text" :class="{ error: !$utils.validUrl(response.image.src.rawUrl) }" :placeholder="content.image_placeholder" v-model="response.image.src.rawUrl" />
 
-		<label for="info_action_link">{{ content.action_link }}</label>
-		<input id="info_action_link" type="text" :class="{ error: !$utils.validUrl(response.actionLink) }" :placeholder="content.action_link_placeholder" v-model="response.actionLink" />
+		<label :for="`info_action_link_${id}`">{{ content.action_link }}</label>
+		<input :id="`info_action_link_${id}`" type="text" :class="{ error: !$utils.validUrl(response.actionLink) }" :placeholder="content.action_link_placeholder" v-model="response.actionLink" />
 	</fieldset>
 </template>
 
@@ -28,7 +28,7 @@ export default {
 		},
 	},
 	created() {
-		this.response.image = {
+		this.response.image = this.response.image ?? {
 			src: {},
 		};
 	},
