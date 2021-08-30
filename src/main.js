@@ -6,7 +6,6 @@ import VueClickAway from 'vue3-click-away';
 var app = createApp(App);
 app.use(VueClickAway);
 app.config.globalProperties.$utils = Utils;
-app.config.devtools = true;
 
 app.mount('#app');
 
