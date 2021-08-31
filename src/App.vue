@@ -10,63 +10,19 @@
 		<section class="container">
 			<section class="title">
 				<h1 class="icon-title">{{ current_content.brand_name }}</h1>
-				<p>
-					Este sería el texto introductorio a esta mierda, con un par de frases sería suficiente lo más probable. No obstante, ahora vamos a utilizar esta sección a modo de placeholder para acelerar
-					en el resto e ir añadiendo los puntos a tratar y a tener en cuenta, con la lista de cosas por hacer.
-				</p>
+				<div v-html="current_content.introduction"></div>
+				<h3>//TODO</h3>
 				<ul>
-					<li>
-						<span class="strike">Diseño base, planteamiento y paneles:</span>
-						<ul>
-							<li class="strike">Cabecera</li>
-							<li class="strike">Main con paneles dinámicos</li>
-							<li class="strike">Resultado con el JSON final y con opción a copiar</li>
-							<li class="strike">Footer</li>
-						</ul>
-					</li>
-					<li class="strike">
-						Crear los formularios uno a uno
-						<ul>
-							<li class="strike">info</li>
-							<li class="strike">description</li>
-							<li class="strike">image</li>
-							<li class="strike">button</li>
-							<li class="strike">list</li>
-							<li class="strike">accordion</li>
-							<li class="strike">chips</li>
-							<li class="strike">separator</li>
-						</ul>
-					</li>
-					<li class="strike">Colapsar paneles</li>
-					<li class="strike">Añadir opción de copiar el JSON</li>
-					<li class="strike">Añadir botón para eliminar un panel</li>
-					<li class="strike">Añadir validación de url en los campos de url</li>
-					<li class="strike">Añadir iconos a las opciones</li>
-					<li>Crear preview en dialog flow, seguramente haciendo uso de la API</li>
-					<li>Plantear la opción de vista previa "fuera de dialogflow"</li>
-					<li>Quizás plantear crear respuestas para que sean compuestas o no? Utilizando el array de arrays que es rich content</li>
-					<li class="strike">Cambiar todos los textos por un json de contenido y literales</li>
-					<li>Internacionalización, planteamos ES y EN únicamente</li>
-					<li>Añadir opción de tema oscuro (Con el aspecto de opera ligeramente modificado)</li>
-					<li class="strike">Animate css</li>
-					<li class="strike">Reordenar paneles</li>
-					<li class="strike">Duplicado de paneles</li>
-					<li class="strike">Selector de colores</li>
-					<li>En los eventos usar un selector para el languageCode?</li>
-					<li class="strike">Revisar comportamiento de la lista de parámetros. Tiene algunos bugs al cambiar la key.</li>
-					<li class="strike">Usar $event para los add line text o add parameter</li>
-					<li class="strike">Añadir una función para que el JSON se esté mostrando con una limpieza de elementos vacíos.</li>
-					<li class="strike">
-						Añadir índice a los ids de cada panel para que sea único y funcionen los eventos y labels for [NOTA Si dividimos cada sección en componente puede que sea innecesario?]
-					</li>
-					<li class="strike">Revisar los parámetros opcionales que son objetos o listas para que se inicialicen y activen por eventos de un check (como event en button)</li>
-					<li>Seleccionar los iconos de la librería de material con asistente</li>
-					<li class="strike">Evitar el submit al hacer intro en cualquier input</li>
-					<li class="strike">Añadir enlaces de ayuda a DialogFlow para los tipos de respuesta</li>
-					<li class="strike">Estudiar posibilidad de tener una “superentidad” con metainformación de los paneles? En lugar de que estén “duplicados” en dos listas sincronizadas</li>
-					<li class="strike">Comprobar el comportamiento de los event parameters. Puede que sacar lo a un componente nuevo</li>
-					<li>Posibilidad de parsear un JSON generado</li>
-					<li class="strike">Solucionar problema con los focus de las listas on enter</li>
+					<li>Show preview in dialogflow, calling the API on demand</li>
+					<li>i18N EN & ES only</li>
+					<li>Dark theme</li>
+					<li>Add language code selector for the events (on button & list)</li>
+					<li>Add selector for the material icons (button)</li>
+					<li>Load/Paste a JSON into panels</li>
+					<li>Focus first input when added a new response type</li>
+					<li>Work on better introductory text</li>
+					<li>Remove 'TODO' from home page</li>
+					<li>Add an option for saving for your current work</li>
 				</ul>
 			</section>
 		</section>
@@ -161,6 +117,8 @@ export default {
 			],
 			content: {
 				brand_name: 'Dialogflow Messenger Rich Response Generator',
+				introduction:
+					'<p>With this tool you can generate the custom payload on your intents with a <a href="https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#rich" target="_blank">rich response message</a> more visually atractive and engaging than a simple plain text message. In order to set a rich response message as your intent response, Dialogflow asks for a custom payload, a JSON formated object that comply with the specification on <a href="https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#rich" target="_blank">Dialogflow Docs</a>.</p><p>This tool let you build that custom payload the easy way, adding and filling the options for the different types of responses and the make a simple copy&paste of the resulting JSON.</p>',
 				dialogflow_messenger: {
 					chat_title: 'Preview',
 				},
