@@ -5,7 +5,13 @@
 		<input :id="`button_event_name_${id}`" type="text" :placeholder="content.name" v-model="response.event.name" />
 
 		<label :for="`button_event_language_${id}`">{{ content.language }}</label>
-		<input :id="`button_event_language_${id}`" type="text" :placeholder="content.language" v-model="response.event.languageCode" />
+		<select :id="`button_event_language_${id}`" v-model="response.event.languageCode">
+			<option selected :value="null">{{ content.language_placeholder }}</option>
+			<option disabled> -------------------------------------------------- </option>
+			<option v-for="language in languages" :key="language.code" :value="language.code">
+				{{ language.name }}
+			</option>
+		</select>
 
 		<label :for="`list_event_parameters_${id}`">{{ content.parameters }}</label>
 		<transition-group name="flip-list">
@@ -61,7 +67,7 @@ export default {
 		},
 	},
 	created() {
-		this.response.event = this.response.event ?? { parameters: {} };
+		this.response.event = this.response.event ?? { languageCode: null, parameters: {} };
 		this.event_parameters = Object.keys(this.response.event.parameters).map((x) => {
 			return { key: x, value: this.response.event.parameters[x] };
 		});
@@ -72,12 +78,70 @@ export default {
 				title:
 					'<a href="https://cloud.google.com/dialogflow/docs/events-overview" target="_blank">Dialogflow event</a> that is triggered when the button is clicked, see the <a href="https://cloud.google.com/dialogflow/es/docs/reference/rest/v2/QueryInput#eventinput" target="_blank">EventInput</a> REST reference',
 				name: 'Event name',
-				language: 'Event language code',
+				language: 'Event language',
+				language_placeholder: 'None',
 				parameters: 'Event parameters',
 				parameters_key: 'Key',
 				parameters_value: 'Value',
 				parameters_delete: 'delete',
 			},
+			languages: [
+				{ name: 'Bengali', code: 'bn' },
+				{ name: 'Bengali - Bangladesh', code: 'bn-BD' },
+				{ name: 'Bengali - India', code: 'bn-IN' },
+				{ name: 'Chinese - Cantonese', code: 'zh-HK' },
+				{ name: 'Chinese - Simplified', code: 'zh-CN' },
+				{ name: 'Chinese - Traditional', code: 'zh-TW' },
+				{ name: 'Danish', code: 'da' },
+				{ name: 'Dutch', code: 'nl' },
+				{ name: 'English', code: 'en' },
+				{ name: 'English - Australia', code: 'en-AU' },
+				{ name: 'English - Canada', code: 'en-CA' },
+				{ name: 'English - Great Britain', code: 'en-GB' },
+				{ name: 'English - India', code: 'en-IN' },
+				{ name: 'English - US', code: 'en-US' },
+				{ name: 'Filipino', code: 'fil' },
+				{ name: 'Filipino - The Philippines', code: 'fil-PH' },
+				{ name: 'Finnish', code: 'fi' },
+				{ name: 'French', code: 'fr' },
+				{ name: 'French - Canada', code: 'fr-CA' },
+				{ name: 'French - France', code: 'fr-FR' },
+				{ name: 'German', code: 'de' },
+				{ name: 'Hindi', code: 'hi' },
+				{ name: 'Indonesian', code: 'id' },
+				{ name: 'Italian', code: 'it' },
+				{ name: 'Japanese', code: 'ja' },
+				{ name: 'Korean', code: 'ko' },
+				{ name: 'Malay', code: 'ms' },
+				{ name: 'Malay - Malaysia', code: 'ms-MY' },
+				{ name: 'Marathi', code: 'mr' },
+				{ name: 'Marathi - India', code: 'mr-IN' },
+				{ name: 'Norwegian', code: 'no' },
+				{ name: 'Polish', code: 'pl' },
+				{ name: 'Portuguese - Brazil', code: 'pt-BR' },
+				{ name: 'Portuguese - Portugal', code: 'pt' },
+				{ name: 'Romanian', code: 'ro' },
+				{ name: 'Romanian - Romania', code: 'ro-RO' },
+				{ name: 'Russian', code: 'ru' },
+				{ name: 'Sinhala', code: 'si' },
+				{ name: 'Sinhala - Sri Lanka', code: 'si-LK' },
+				{ name: 'Spanish', code: 'es' },
+				{ name: 'Spanish - Latin America', code: 'es-419' },
+				{ name: 'Spanish - Spain', code: 'es-ES' },
+				{ name: 'Swedish', code: 'sv' },
+				{ name: 'Tamil', code: 'ta' },
+				{ name: 'Tamil - India', code: 'ta-IN' },
+				{ name: 'Tamil - Sri Lanka', code: 'ta-LK' },
+				{ name: 'Tamil - Malaysia', code: 'ta-MY' },
+				{ name: 'Tamil - Singapore', code: 'ta-SG' },
+				{ name: 'Telugu', code: 'te' },
+				{ name: 'Telugu - India', code: 'te-IN' },
+				{ name: 'Thai', code: 'th' },
+				{ name: 'Turkish', code: 'tr' },
+				{ name: 'Ukrainian', code: 'uk' },
+				{ name: 'Vietnamese', code: 'vi' },
+				{ name: 'Vietnamese - Vietnam', code: 'vi-VN' },
+			],
 			event_parameters: [],
 		};
 	},
