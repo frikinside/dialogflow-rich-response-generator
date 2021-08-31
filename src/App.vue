@@ -13,13 +13,12 @@
 				<div v-html="current_content.introduction"></div>
 				<h3>//TODO</h3>
 				<ul>
-					<li>Show preview in dialogflow, calling the API on demand</li>
-					<li>i18N EN & ES only</li>
-					<li>Dark theme</li>
-					<li>Add language code selector for the events (on button & list)</li>
 					<li>Add selector for the material icons (button)</li>
 					<li>Load/Paste a JSON into panels</li>
 					<li>Focus first input when added a new response type</li>
+					<li>i18N EN & ES only</li>
+					<li>Dark theme</li>
+					<li>Show preview in dialogflow, calling the API on demand</li>
 					<li>Work on better introductory text</li>
 					<li>Remove 'TODO' from home page</li>
 					<li>Add an option for saving for your current work</li>
