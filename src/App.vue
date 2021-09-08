@@ -13,15 +13,14 @@
 				<div v-html="current_content.introduction"></div>
 				<h3>//TODO</h3>
 				<ul>
-					<li>Add selector for the material icons (button)</li>
-					<li>Load/Paste a JSON into panels</li>
 					<li>Focus first input when added a new response type</li>
 					<li>i18N EN & ES only</li>
 					<li>Dark theme</li>
+					<li>Add an option for saving your current work</li>
 					<li>Show preview in dialogflow, calling the API on demand</li>
+					<li>Add a "Report a bug" option</li>
 					<li>Work on better introductory text</li>
 					<li>Remove 'TODO' from home page</li>
-					<li>Add an option for saving for your current work</li>
 				</ul>
 			</section>
 		</section>
@@ -117,7 +116,7 @@ export default {
 			content: {
 				brand_name: 'Dialogflow Messenger Rich Response Generator',
 				introduction:
-					'<p>With this tool you can generate the custom payload on your intents with a <a href="https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#rich" target="_blank">rich response message</a> more visually atractive and engaging than a simple plain text message. In order to set a rich response message as your intent response, Dialogflow asks for a custom payload, a JSON formated object that comply with the specification on <a href="https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#rich" target="_blank">Dialogflow Docs</a>.</p><p>This tool let you build that custom payload the easy way, adding and filling the options for the different types of responses and the make a simple copy&paste of the resulting JSON.</p>',
+					'<p>With this tool you can generate the custom payload on your intents with a <a href="https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#rich" target="_blank">rich response message</a> more visually atractive and engaging than a simple plain text message. In order to set a rich response message as your intent response, Dialogflow asks for a custom payload, a JSON formated object that comply with the specification on <a href="https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#rich" target="_blank">Dialogflow Docs</a>.</p><p>This tool let you build that custom payload the easy way, adding and filling the options for the different types of responses and the make a simple copy&paste of the resulting JSON.</p><p>This is still a work in progress, if you find a bug, something is not working properly or even if you have any suggestion, please, <a href="https://github.com/frikinside/dialogflow-rich-response-generator/issues/new" target="_blank">fill me an issue</a> about it.</p>',
 				dialogflow_messenger: {
 					chat_title: 'Preview',
 				},
@@ -569,5 +568,14 @@ select:focus.error {
 .flip-list-leave-to {
 	opacity: 0;
 	transform: translateY(-30px);
+}
+
+/* CUSTOM TYPEAHEAD */
+.input-group > .simple-typeahead > input {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+fieldset .simple-typeahead {
+	margin-bottom: 1.5rem;
 }
 </style>
