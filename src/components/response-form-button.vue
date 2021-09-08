@@ -122,7 +122,7 @@ export default {
 	width: 24px;
 	overflow: hidden;
 }
-.material-icons-selector-wrapper /deep/.simple-typeahead-list-item-text:before {
+.material-icons-selector-wrapper:deep() .simple-typeahead-list-item-text:before {
 	content: attr(data-text);
 	font-family: 'Material Icons';
 	vertical-align: bottom;
