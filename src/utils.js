@@ -41,10 +41,15 @@ const cleanJSON = (key, value) => {
 	return value;
 };
 
+const escapeRegExp = (string) => {
+	return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
+
 export default {
 	urlRegex,
 	validUrl,
 	generateUniqueId,
 	itemIsEmpty,
 	cleanJSON,
+	escapeRegExp,
 };

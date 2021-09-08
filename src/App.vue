@@ -13,15 +13,14 @@
 				<div v-html="current_content.introduction"></div>
 				<h3>//TODO</h3>
 				<ul>
-					<li>Add selector for the material icons (button)</li>
-					<li>Load/Paste a JSON into panels</li>
 					<li>Focus first input when added a new response type</li>
 					<li>i18N EN & ES only</li>
 					<li>Dark theme</li>
+					<li>Add an option for saving your current work</li>
 					<li>Show preview in dialogflow, calling the API on demand</li>
+					<li>Add a "Report a bug" option</li>
 					<li>Work on better introductory text</li>
 					<li>Remove 'TODO' from home page</li>
-					<li>Add an option for saving for your current work</li>
 				</ul>
 			</section>
 		</section>
@@ -569,5 +568,14 @@ select:focus.error {
 .flip-list-leave-to {
 	opacity: 0;
 	transform: translateY(-30px);
+}
+
+/* CUSTOM TYPEAHEAD */
+.input-group > .simple-typeahead > input {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+fieldset .simple-typeahead {
+	margin-bottom: 1.5rem;
 }
 </style>
