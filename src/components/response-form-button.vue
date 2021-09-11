@@ -31,7 +31,8 @@
 <script>
 import { ColorPicker } from 'vue-color-kit';
 import 'vue-color-kit/dist/vue-color-kit.css';
-import typeahead from './simple-typeahead.vue';
+import typeahead from 'vue3-simple-typeahead';
+import 'vue3-simple-typeahead/dist/vue3-simple-typeahead.css';
 
 import ResponseFormEvent from './response-form-event.vue';
 
