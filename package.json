@@ -11,7 +11,6 @@
     "core-js": "^3.6.5",
     "vue": "^3.0.0",
     "vue-color-kit": "^1.0.5",
-    "vue-simple-suggest": "^1.11.1",
     "vue3-click-away": "^1.2.1",
     "vue3-simple-typeahead": "^0.3.1",
     "vuedraggable": "^4.1.0"
