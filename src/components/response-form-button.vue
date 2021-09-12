@@ -108,10 +108,10 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style src="vue-color-kit/dist/vue-color-kit.css"></style>
+<!-- <style src="vue-color-kit/dist/vue-color-kit.css"></style> // Not working on production, using import directly from unpkg -->
 <style scoped>
 @import 'https://fonts.googleapis.com/css2?family=Material+Icons';
-/*@import 'https://unpkg.com/vue-color-kit@1.0.5/dist/vue-color-kit.css';*/
+@import 'https://unpkg.com/vue-color-kit@1.0.5/dist/vue-color-kit.css';
 </style>
 <style scoped>
 .hu-color-picker {
