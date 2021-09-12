@@ -30,7 +30,7 @@
 
 <script>
 import { ColorPicker } from 'vue-color-kit';
-import 'vue-color-kit/dist/vue-color-kit.css';
+//import 'vue-color-kit/dist/vue-color-kit.css'; //cannot make it work on production build because the library has set the sideEffects: false
 import typeahead from 'vue3-simple-typeahead';
 import 'vue3-simple-typeahead/dist/vue3-simple-typeahead.css';
 
@@ -108,8 +108,10 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+<style src="vue-color-kit/dist/vue-color-kit.css"></style>
 <style scoped>
 @import 'https://fonts.googleapis.com/css2?family=Material+Icons';
+/*@import 'https://unpkg.com/vue-color-kit@1.0.5/dist/vue-color-kit.css';*/
 </style>
 <style scoped>
 .hu-color-picker {
