@@ -15,7 +15,6 @@
 				<ul>
 					<li>i18N EN & ES only</li>
 					<li>Dark theme</li>
-					<li>Add an option for saving your current work</li>
 					<li>Show preview in dialogflow, calling the API on demand</li>
 					<li>Add a "Report a bug" option</li>
 					<li>Work on better introductory text</li>
@@ -105,6 +104,11 @@ export default {
 		CollapseTransition,
 		ResponseForm,
 	},
+	mounted() {
+		if (localStorage.panels) {
+			this.panels = JSON.parse(localStorage.panels);
+		}
+	},
 	data() {
 		return {
 			current_language: 'en',
@@ -181,6 +185,10 @@ export default {
 			},
 			panels: [],
 			json_payload_copied: false,
+			save_timeout: {
+				id: 0,
+				delay: 1000,
+			},
 		};
 	},
 	computed: {
@@ -191,6 +199,7 @@ export default {
 			return 'mailto:friki.inside@gmail.com?subject=' + this.current_content.contact_email_subject;
 		},
 		payloadJSON() {
+			this.savePanels();
 			//return JSON.stringify({ richContent: [this.panels.map((x) => x.response)] }, this.$utils.cleanJSON, 4);
 			//return JSON.stringify({ richContent: [this.panels.map((x) => JSON.parse(JSON.stringify(x.response, this.$utils.cleanJSON)))] }, this.$utils.cleanJSON, 4);
 			return JSON.stringify(
@@ -201,6 +210,12 @@ export default {
 		},
 	},
 	methods: {
+		savePanels() {
+			clearTimeout(this.save_timeout.id);
+			this.save_timeout.id = setTimeout(() => {
+				localStorage.panels = JSON.stringify(this.panels);
+			}, this.save_timeout.delay);
+		},
 		findType(type_name) {
 			return this.current_content.types.find((x) => {
 				return x.name == type_name;
