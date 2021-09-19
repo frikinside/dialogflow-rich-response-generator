@@ -13,7 +13,6 @@
 				<div v-html="current_content.introduction"></div>
 				<h3>//TODO</h3>
 				<ul>
-					<li>Focus first input when added a new response type</li>
 					<li>i18N EN & ES only</li>
 					<li>Dark theme</li>
 					<li>Add an option for saving your current work</li>
