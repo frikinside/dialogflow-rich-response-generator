@@ -7,18 +7,20 @@
 		:language-code="current_language"
 	></df-messenger>
 	<header>
+		<nav class="container">
+			<div class="float-right">
+				<span class="icon-button" title="toggle dark/light mode" @click="dark_mode = !dark_mode"><i class="fa fa-adjust" aria-hidden="true"></i></span
+				><a class="icon-button" title="report a bug" href="https://github.com/frikinside/dialogflow-rich-response-generator/issues/new" target="_blank"><i class="fa fa-bug" aria-hidden="true"></i></a>
+			</div>
+		</nav>
 		<section class="container">
 			<section class="title">
 				<h1 class="icon-title">{{ current_content.brand_name }}</h1>
 				<div v-html="current_content.introduction"></div>
 				<h3>//TODO</h3>
 				<ul>
-					<li>Focus first input when added a new response type</li>
 					<li>i18N EN & ES only</li>
-					<li>Dark theme</li>
-					<li>Add an option for saving your current work</li>
 					<li>Show preview in dialogflow, calling the API on demand</li>
-					<li>Add a "Report a bug" option</li>
 					<li>Work on better introductory text</li>
 					<li>Remove 'TODO' from home page</li>
 				</ul>
@@ -106,6 +108,24 @@ export default {
 		CollapseTransition,
 		ResponseForm,
 	},
+	mounted() {
+		if (localStorage.panels) {
+			this.panels = JSON.parse(localStorage.panels);
+		}
+		this.dark_mode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+	},
+	watch: {
+		dark_mode: {
+			handler(val) {
+				if (val) {
+					document.body.classList.add('dark-mode');
+				} else {
+					document.body.classList.remove('dark-mode');
+				}
+			},
+			immediate: true,
+		},
+	},
 	data() {
 		return {
 			current_language: 'en',
@@ -182,6 +202,11 @@ export default {
 			},
 			panels: [],
 			json_payload_copied: false,
+			save_timeout: {
+				id: 0,
+				delay: 1000,
+			},
+			dark_mode: true,
 		};
 	},
 	computed: {
@@ -192,6 +217,7 @@ export default {
 			return 'mailto:friki.inside@gmail.com?subject=' + this.current_content.contact_email_subject;
 		},
 		payloadJSON() {
+			this.savePanels();
 			//return JSON.stringify({ richContent: [this.panels.map((x) => x.response)] }, this.$utils.cleanJSON, 4);
 			//return JSON.stringify({ richContent: [this.panels.map((x) => JSON.parse(JSON.stringify(x.response, this.$utils.cleanJSON)))] }, this.$utils.cleanJSON, 4);
 			return JSON.stringify(
@@ -202,6 +228,12 @@ export default {
 		},
 	},
 	methods: {
+		savePanels() {
+			clearTimeout(this.save_timeout.id);
+			this.save_timeout.id = setTimeout(() => {
+				localStorage.panels = JSON.stringify(this.panels);
+			}, this.save_timeout.delay);
+		},
 		findType(type_name) {
 			return this.current_content.types.find((x) => {
 				return x.name == type_name;
@@ -250,9 +282,14 @@ header {
 	border-bottom: 1px solid #dadada;
 }
 
-header > .container {
-	padding-bottom: 7.5rem;
-	padding-top: 7.5rem;
+header > nav.container {
+	padding-top: 1.5rem;
+	padding-bottom: 1.5rem;
+	overflow: hidden;
+}
+
+header > section.container {
+	padding-bottom: 2.5rem;
 }
 
 main > .container {
@@ -577,5 +614,145 @@ select:focus.error {
 }
 fieldset .simple-typeahead {
 	margin-bottom: 1.5rem;
+}
+</style>
+<!-- Dark Mode -->
+<style>
+/* Milligram Dark Mode */
+body.dark-mode,
+#app.dark-mode {
+	color: #93a0ab;
+}
+.dark-mode a {
+	color: #c775f6;
+}
+.dark-mode a:focus,
+a:hover {
+	color: #93a0ab;
+}
+.dark-mode .button:focus,
+.dark-mode .button:hover,
+.dark-mode button:focus,
+.dark-mode button:hover,
+.dark-mode input[type='button']:focus,
+.dark-mode input[type='button']:hover,
+.dark-mode input[type='reset']:focus,
+.dark-mode input[type='reset']:hover,
+.dark-mode input[type='submit']:focus,
+.dark-mode input[type='submit']:hover {
+	background-color: #93a0ab;
+	border-color: #93a0ab;
+}
+.dark-mode .button.button-outline:focus,
+.dark-mode .button.button-outline:hover,
+.dark-mode button.button-outline:focus,
+.dark-mode button.button-outline:hover,
+.dark-mode input[type='button'].button-outline:focus,
+.dark-mode input[type='button'].button-outline:hover,
+.dark-mode input[type='reset'].button-outline:focus,
+.dark-mode input[type='reset'].button-outline:hover,
+.dark-mode input[type='submit'].button-outline:focus,
+.dark-mode input[type='submit'].button-outline:hover {
+	border-color: #93a0ab;
+	color: #93a0ab;
+}
+.dark-mode .button.button-clear:focus,
+.dark-mode .button.button-clear:hover,
+.dark-mode button.button-clear:focus,
+.dark-mode button.button-clear:hover,
+.dark-mode input[type='button'].button-clear:focus,
+.dark-mode input[type='button'].button-clear:hover,
+.dark-mode input[type='reset'].button-clear:focus,
+.dark-mode input[type='reset'].button-clear:hover,
+.dark-mode input[type='submit'].button-clear:focus,
+.dark-mode input[type='submit'].button-clear:hover {
+	color: #93a0ab;
+}
+.dark-mode pre {
+	background: #222323;
+}
+.dark-mode code {
+	background: #222323;
+}
+.dark-mode input[type='color'],
+.dark-mode input[type='date'],
+.dark-mode input[type='datetime'],
+.dark-mode input[type='datetime-local'],
+.dark-mode input[type='email'],
+.dark-mode input[type='month'],
+.dark-mode input[type='number'],
+.dark-mode input[type='password'],
+.dark-mode input[type='search'],
+.dark-mode input[type='tel'],
+.dark-mode input[type='text'],
+.dark-mode input[type='url'],
+.dark-mode input[type='week'],
+.dark-mode input:not([type]),
+.dark-mode textarea,
+.dark-mode select {
+	border-color: #313131;
+	color: white;
+}
+.dark-mode select option {
+	color: #222323;
+}
+.dark-mode ::placeholder {
+	color: #999999;
+}
+</style>
+<style>
+/* Dark Mode */
+body.dark-mode,
+#app.dark-mode {
+	background-color: #242631;
+}
+
+.dark-mode header,
+.dark-mode footer,
+.dark-mode .panel {
+	background-color: #121212;
+	border-color: #373737;
+}
+
+.dark-mode main pre {
+	border: 1px solid #373737;
+	border-left: 0.3rem solid #9b4dca;
+}
+
+.dark-mode a.icon-button {
+	color: inherit;
+}
+
+.dark-mode .input-group-addon {
+	background-color: #313131;
+	border-color: #313131;
+	color: #93a0ab;
+}
+
+.dark-mode fieldset > fieldset {
+	background-color: #161616;
+	border-color: #373737;
+}
+
+.dark-mode .input-group .icon-button.delete {
+	background-color: #662f38;
+}
+.dark-mode .icon-button.delete {
+	color: #ff5d57;
+	border-color: #bd3136;
+}
+
+.dark-mode input.error,
+.dark-mode input:focus.error,
+.dark-mode select.error,
+.dark-mode select:focus.error,
+.dark-mode textarea.error,
+.dark-mode textarea:focus.error {
+	color: #d01e2e;
+	border-color: #d01e2e;
+}
+
+.dark-mode .dropdown-menu {
+	background-color: #121212;
 }
 </style>
