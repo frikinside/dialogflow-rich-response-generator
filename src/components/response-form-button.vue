@@ -132,4 +132,18 @@ export default {
 	display: inline-block;
 	width: 25px;
 }
+/* Dark Mode */
+.dark-mode .hu-color-picker {
+	border: 0.1rem solid #3e3e3e;
+}
+.dark-mode .simple-typeahead .simple-typeahead-list {
+	border-color: #313131;
+}
+.dark-mode .simple-typeahead .simple-typeahead-list .simple-typeahead-list-item.simple-typeahead-list-item-active {
+	background-color: #313131;
+}
+.dark-mode .simple-typeahead .simple-typeahead-list .simple-typeahead-list-item {
+	background-color: #121212;
+	border-color: #313131;
+}
 </style>
