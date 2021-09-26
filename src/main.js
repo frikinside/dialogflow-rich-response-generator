@@ -3,8 +3,10 @@ import App from './App.vue';
 import Utils from './utils.js';
 import Cache from './cache.js';
 import VueClickAway from 'vue3-click-away';
+import i18n from './i18n';
 
 var app = createApp(App);
+app.use(i18n);
 app.use(VueClickAway);
 app.config.globalProperties.$utils = Utils;
 app.config.globalProperties.$cache = Cache;
