@@ -1,14 +1,27 @@
 <template>
 	<fieldset>
-		<label :for="`list_title_${id}`">{{ content.title }}</label>
-		<input :id="`list_title_${id}`" type="text" :placeholder="content.title" v-model="response.title" />
+		<label :for="`list_title_${id}`">{{ $t('title') }}</label>
+		<input :id="`list_title_${id}`" type="text" :placeholder="$t('title')" v-model="response.title" />
 
-		<label :for="`list_subtitle_${id}`">{{ content.subtitle }}</label>
-		<input :id="`list_subtitle_${id}`" type="text" :placeholder="content.subtitle" v-model="response.subtitle" />
+		<label :for="`list_subtitle_${id}`">{{ $t('subtitle') }}</label>
+		<input :id="`list_subtitle_${id}`" type="text" :placeholder="$t('subtitle')" v-model="response.subtitle" />
 
 		<response-form-event :response="response" :id="id" />
 	</fieldset>
 </template>
+
+<i18n>
+{ 
+	"en": {
+		"title": "Option title",
+		"subtitle": "Option subtitle"
+	},
+	"es": {
+		"title": "Título de la opción",
+		"subtitle": "Subtítulo de la opción"
+	}
+}
+</i18n>
 
 <script>
 import ResponseFormEvent from './response-form-event.vue';
@@ -26,18 +39,5 @@ export default {
 			required: true,
 		},
 	},
-	created() {},
-	data() {
-		return {
-			content: {
-				title: 'Option title',
-				subtitle: 'Option subtitle',
-			},
-		};
-	},
-	methods: {},
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
