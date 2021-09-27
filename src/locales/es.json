@@ -1,3 +1,30 @@
 {
-  "message": "hola i18n !!"
-}
+		"brand_name": "Dialogflow Messenger Rich Response Generator",
+		"introduction":
+			"<p>Con esta herramienta puedes generar un payload personalizado para usar en tus intens mediante un <a href=\"https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#rich\" target=\"_blank\">mensaje de respuesta enriquecida</a> más atractiva visualmente e interesante que un simple mensaje de texto plano. Para poder establecer un mensaje de respuesta enriquecida como respuesta en tus intents, Dialogflow solicita un payload personalizado, un objeto en formato JSON que cumpla con las especificaciones que se detallan en <a href=\"https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#rich\" target=\"_blank\">Dialogflow Docs</a>.</p><p>Esta herramienta te permite construir ese payload personalizado de forma sencilla, añadiendo y rellenando las opciones para los diferentes tipos de respuesta pudiendo hacer un simple Copiar&pegar del JSON resultante.</p><p>Todavía es un trabajo en progreso, si encuentras algún bug, algo no está funcionando adecuadamente o si tienes cualquier sugerencia, por favor, <a href=\"https://github.com/frikinside/dialogflow-rich-response-generator/issues/new\" target=\"_blank\">créame un ticket</a> al respecto.</p>",
+		"dialogflow_messenger": {
+			"chat_title": "Vista previa"
+		},
+		"responses_empty_message": "No hay ninguna respuesta todavía. Utilice el botón de <code>Añadir</code> para agregar un tipo de respuesta a su payload personalizado.",
+		"add_button": "Añadir",
+		"types": {
+			"info": "Información",
+			"description": "Descripción",
+			"image": "Imagen",
+			"button": "Botón",
+			"list": "Lista",
+			"accordion": "Acordeón",
+			"chips": "Chips de sugerencias",
+			"divider": "Divisor"
+		},
+		"collapse": "colapsar",
+		"expand": "expandir",
+		"help_link_alt_text": "Ir a la documentación de dialogflow messenger",
+		"move": "mover",
+		"delete": "borrar",
+		"clone": "duplicar",
+		"copy": "copiar",
+		"json_payload_copied": "copiado!",
+		"contact_email_subject": "¡Hola! Me gusta tu herramienta, prepárate a leer",
+		"contact_email_alt": "Envíame un correo"
+	}

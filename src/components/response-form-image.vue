@@ -1,12 +1,27 @@
 <template>
 	<fieldset>
-		<label :for="`image_rawUrl_${id}`">{{ content.rawUrl }}</label>
-		<input :id="`image_rawUrl_${id}`" type="text" :class="{ error: !$utils.validUrl(response.rawUrl) }" :placeholder="content.rawUrl_placeholder" v-model="response.rawUrl" />
+		<label :for="`image_rawUrl_${id}`">{{ $t('rawUrl') }}</label>
+		<input :id="`image_rawUrl_${id}`" type="text" :class="{ error: !$utils.validUrl(response.rawUrl) }" :placeholder="$t('rawUrl_placeholder')" v-model="response.rawUrl" />
 
-		<label :for="`image_accessibilityText_${id}`">{{ content.accessibilityText }}</label>
-		<input :id="`image_accessibilityText_${id}`" type="text" :placeholder="content.accessibilityText" v-model="response.accessibilityText" />
+		<label :for="`image_accessibilityText_${id}`">{{ $t('accessibilityText') }}</label>
+		<input :id="`image_accessibilityText_${id}`" type="text" :placeholder="$t('accessibilityText')" v-model="response.accessibilityText" />
 	</fieldset>
 </template>
+
+<i18n>
+{ 
+	"en": {
+		"rawUrl": "Public URL for image",
+		"rawUrl_placeholder": "https://example.com/path/to/image.png",
+		"accessibilityText": "Alt text for image"
+	},
+	"es": {
+		"rawUrl": "Url pública de la imagen",
+		"rawUrl_placeholder": "https://ejemplo.com/ruta/a/la/imagen.png",
+		"accessibilityText": "Texto alternativo para la imagen"
+	}
+}
+</i18n>
 
 <script>
 export default {
@@ -21,19 +36,5 @@ export default {
 			required: true,
 		},
 	},
-	created() {},
-	data() {
-		return {
-			content: {
-				rawUrl: 'Public URL for image',
-				rawUrl_placeholder: 'https://example.com/path/to/image.png',
-				accessibilityText: 'Alt text for image',
-			},
-		};
-	},
-	methods: {},
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>

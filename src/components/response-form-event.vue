@@ -1,19 +1,19 @@
 <template>
-	<label v-html="content.title"></label>
+	<label v-html="$t('title')"></label>
 	<fieldset>
-		<label :for="`button_event_name_${id}`">{{ content.name }}</label>
-		<input :id="`button_event_name_${id}`" type="text" :placeholder="content.name" v-model="response.event.name" />
+		<label :for="`button_event_name_${id}`">{{ $t('name') }}</label>
+		<input :id="`button_event_name_${id}`" type="text" :placeholder="$t('name')" v-model="response.event.name" />
 
-		<label :for="`button_event_language_${id}`">{{ content.language }}</label>
+		<label :for="`button_event_language_${id}`">{{ $t('language') }}</label>
 		<select :id="`button_event_language_${id}`" v-model="response.event.languageCode">
-			<option selected :value="null">{{ content.language_placeholder }}</option>
+			<option selected :value="null">{{ $t('language_placeholder') }}</option>
 			<option disabled> -------------------------------------------------- </option>
 			<option v-for="language in languages" :key="language.code" :value="language.code">
 				{{ language.name }}
 			</option>
 		</select>
 
-		<label :for="`list_event_parameters_${id}`">{{ content.parameters }}</label>
+		<label :for="`list_event_parameters_${id}`">{{ $t('parameters') }}</label>
 		<transition-group name="flip-list">
 			<div class="row" v-for="(parameter, index) in event_parameters" :key="index">
 				<div class="column">
@@ -25,7 +25,7 @@
 							@keyup.enter="focusOn({ index, suffix: 'value' })"
 							:id="`${id}_list_event_parameter_${index}_key`"
 							type="text"
-							:placeholder="content.parameters_key"
+							:placeholder="$t('parameters_key')"
 							v-model="parameter.key"
 							:input="refreshParameters()"
 							:class="{ error: parameterExists(parameter.key) }"
@@ -41,10 +41,10 @@
 							@keyup.enter="addEventParameter(index)"
 							:id="`${id}_list_event_parameter_${index}_value`"
 							type="text"
-							:placeholder="content.parameters_value"
+							:placeholder="$t('parameters_value')"
 							v-model="parameter.value"
 						/>
-						<span class="icon-button delete input-group-addon" @click="removeEventParameter(index)" :title="content.parameters_delete"><i class="fa fa-window-close" aria-hidden="true"></i></span>
+						<span class="icon-button delete input-group-addon" @click="removeEventParameter(index)" :title="$t('parameters_delete')"><i class="fa fa-window-close" aria-hidden="true"></i></span>
 					</div>
 				</div>
 			</div>
@@ -52,6 +52,31 @@
 		<button type="button" class="button" @click="addEventParameter()"><i class="fa fa-plus" aria-hidden="true"></i></button>
 	</fieldset>
 </template>
+
+<i18n>
+{ 
+	"en": {
+		"title": "<a href=\"https://cloud.google.com/dialogflow/docs/events-overview\" target=\"_blank\">Dialogflow event</a> that is triggered when the button is clicked, see the <a href=\"https://cloud.google.com/dialogflow/es/docs/reference/rest/v2/QueryInput#eventinput\" target=\"_blank\">EventInput</a> REST reference",
+		"name": "Event name",
+		"language": "Event language",
+		"language_placeholder": "None",
+		"parameters": "Event parameters",
+		"parameters_key": "Key",
+		"parameters_value": "Value",
+		"parameters_delete": "delete"
+	},
+	"es": {
+		"title": "<a href=\"https://cloud.google.com/dialogflow/docs/events-overview\" target=\"_blank\">Evento Dialogflow</a> que se lanza al pulsar el botón, consulte la referencia REST de <a href=\"https://cloud.google.com/dialogflow/es/docs/reference/rest/v2/QueryInput#eventinput\" target=\"_blank\">EventInput</a>",
+		"name": "Nombre del evento",
+		"language": "Lenguaje del evento",
+		"language_placeholder": "Ninguno",
+		"parameters": "Parámetros del evento",
+		"parameters_key": "Nombre",
+		"parameters_value": "Valor",
+		"parameters_delete": "borrar"
+	}
+}
+</i18n>
 
 <script>
 export default {
@@ -74,17 +99,6 @@ export default {
 	},
 	data() {
 		return {
-			content: {
-				title:
-					'<a href="https://cloud.google.com/dialogflow/docs/events-overview" target="_blank">Dialogflow event</a> that is triggered when the button is clicked, see the <a href="https://cloud.google.com/dialogflow/es/docs/reference/rest/v2/QueryInput#eventinput" target="_blank">EventInput</a> REST reference',
-				name: 'Event name',
-				language: 'Event language',
-				language_placeholder: 'None',
-				parameters: 'Event parameters',
-				parameters_key: 'Key',
-				parameters_value: 'Value',
-				parameters_delete: 'delete',
-			},
 			languages: [
 				{ name: 'Bengali', code: 'bn' },
 				{ name: 'Bengali - Bangladesh', code: 'bn-BD' },
@@ -195,6 +209,3 @@ export default {
 	},
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>

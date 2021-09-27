@@ -11,7 +11,7 @@
 			<div class="float-right">
 				<span class="icon-button" title="toggle dark/light mode" @click="dark_mode = !dark_mode"><i class="fa fa-adjust" aria-hidden="true"></i></span
 				><a class="icon-button" title="report a bug" href="https://github.com/frikinside/dialogflow-rich-response-generator/issues/new" target="_blank"><i class="fa fa-bug" aria-hidden="true"></i></a>
-				<select id="language_selector" v-model="$i18n.locale">
+				<select id="language_selector" v-model="$i18n.locale" @change="changeLocale">
 					<option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">{{ locale }}</option>
 				</select>
 			</div>
@@ -22,11 +22,9 @@
 				<div v-html="$t('introduction')"></div>
 				<h3>//TODO</h3>
 				<ul>
-					<li>i18N EN & ES only</li>
-					<li>Save language preference</li>
-					<li>Identify browser language</li>
-					<li>Improve selector</li>
+					<li>Improve language selector</li>
 					<li>Show preview in dialogflow, calling the API on demand</li>
+					<li>Finish styles</li>
 					<li>Work on better introductory text</li>
 					<li>Remove 'TODO' from home page</li>
 				</ul>
@@ -102,12 +100,12 @@
 
 <i18n>
 {
-	"en":{
+	"en": {
 		"brand_name": "Dialogflow Messenger Rich Response Generator",
 		"introduction":
 			"<p>With this tool you can generate the custom payload on your intents with a <a href=\"https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#rich\" target=\"_blank\">rich response message</a> more visually atractive and engaging than a simple plain text message. In order to set a rich response message as your intent response, Dialogflow asks for a custom payload, a JSON formated object that comply with the specification on <a href=\"https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#rich\" target=\"_blank\">Dialogflow Docs</a>.</p><p>This tool let you build that custom payload the easy way, adding and filling the options for the different types of responses and the make a simple copy&paste of the resulting JSON.</p><p>This is still a work in progress, if you find a bug, something is not working properly or even if you have any suggestion, please, <a href=\"https://github.com/frikinside/dialogflow-rich-response-generator/issues/new\" target=\"_blank\">fill me an issue</a> about it.</p>",
 		"dialogflow_messenger": {
-			"chat_title": "Preview",
+			"chat_title": "Preview"
 		},
 		"responses_empty_message": "You don't have any response yet. Use the <code>Add</code> button to add a response type to your custom payload.",
 		"add_button": "Add",
@@ -132,12 +130,12 @@
 		"contact_email_subject": "¡Hello! I like your tool, prepare to read",
 		"contact_email_alt": "Email me"
 	},
-	"es":{
+	"es": {
 		"brand_name": "Dialogflow Messenger Rich Response Generator",
 		"introduction":
 			"<p>Con esta herramienta puedes generar un payload personalizado para usar en tus intens mediante un <a href=\"https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#rich\" target=\"_blank\">mensaje de respuesta enriquecida</a> más atractiva visualmente e interesante que un simple mensaje de texto plano. Para poder establecer un mensaje de respuesta enriquecida como respuesta en tus intents, Dialogflow solicita un payload personalizado, un objeto en formato JSON que cumpla con las especificaciones que se detallan en <a href=\"https://cloud.google.com/dialogflow/es/docs/integrations/dialogflow-messenger#rich\" target=\"_blank\">Dialogflow Docs</a>.</p><p>Esta herramienta te permite construir ese payload personalizado de forma sencilla, añadiendo y rellenando las opciones para los diferentes tipos de respuesta pudiendo hacer un simple Copiar&pegar del JSON resultante.</p><p>Todavía es un trabajo en progreso, si encuentras algún bug, algo no está funcionando adecuadamente o si tienes cualquier sugerencia, por favor, <a href=\"https://github.com/frikinside/dialogflow-rich-response-generator/issues/new\" target=\"_blank\">créame un ticket</a> al respecto.</p>",
 		"dialogflow_messenger": {
-			"chat_title": "Vista previa",
+			"chat_title": "Vista previa"
 		},
 		"responses_empty_message": "No hay ninguna respuesta todavía. Utilice el botón de <code>Añadir</code> para agregar un tipo de respuesta a su payload personalizado.",
 		"add_button": "Añadir",
@@ -184,6 +182,7 @@ export default {
 			this.panels = JSON.parse(localStorage.panels);
 		}
 		this.dark_mode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+		this.$i18n.locale = localStorage.locale || ([].concat(navigator.languages, navigator.language, navigator.userLanguage, navigator.browserLanguage, navigator.systemLanguage).filter(Boolean)[0]||'en').split('-')[0];
 	},
 	watch: {
 		dark_mode: {
@@ -280,6 +279,9 @@ export default {
 		},
 	},
 	methods: {
+		changeLocale(event) {
+			localStorage.locale = event.target.value;
+		},
 		savePanels() {
 			clearTimeout(this.save_timeout.id);
 			this.save_timeout.id = setTimeout(() => {
