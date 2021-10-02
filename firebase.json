@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "dfm-rrg",
+    "site": "dfmrrg",
     "public": "dist",
     "ignore": [
       "firebase.json",
